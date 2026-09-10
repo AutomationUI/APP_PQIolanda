@@ -1,0 +1,10 @@
+{
+  "name": "Ficha de Inscrição - Parque Iolanda",
+  "description": "Ficha de inscrição oficial do Projeto Parque Iolanda com foto 3x4 e envio de documentos.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

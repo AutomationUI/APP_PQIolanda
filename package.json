@@ -4,8 +4,9 @@
   "description": "Ficha de Inscrição Oficial - Parque Iolanda",
   "main": "Index.html",
   "scripts": {
-    "dev": "npx http-server -p 8080 -c-1",
-    "start": "npx http-server -p 8080 -c-1"
+    "dev": "node server.js",
+    "build": "mkdir -p dist && cp Index.html dist/index.html 2>/dev/null || true",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,8 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
