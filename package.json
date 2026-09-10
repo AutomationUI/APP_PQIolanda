@@ -1,0 +1,17 @@
+{
+  "name": "app_parque",
+  "version": "1.0.0",
+  "description": "Ficha de Inscrição Oficial - Parque Iolanda",
+  "main": "Index.html",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -c-1",
+    "start": "npx http-server -p 8080 -c-1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "http-server": "^14.1.1"
+  }
+}
