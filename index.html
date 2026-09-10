@@ -404,6 +404,16 @@
       border-color: #2d5a4c;
       background: #eff7f3;
     }
+    .modal-drop-zone.bloqueado {
+      opacity: 0.55;
+      background: #f1f5f3;
+      border-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+    .modal-drop-zone.bloqueado:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f3;
+    }
     .btn-trocar-arquivo {
       margin-top: 8px;
       background: #edf2ef !important;
@@ -512,10 +522,10 @@
 
       <div class="campo" style="margin-bottom:14px; text-align:left;">
         <label style="font-weight:700; color:#2d5a4c; display:block; margin-bottom:6px; font-size:13px;">
-          Categoria / Tipo do Documento: <span style="color:#d9534f;">*</span>
+          1º Passo: Selecione o Tipo do Documento: <span style="color:#d9534f; font-weight:800;">* (OBRIGATÓRIO)</span>
         </label>
         <select id="modalAnexoTipo" class="select-anexo-tipo" onchange="window.validarFormModalAnexo()">
-          <option value="">-- Selecione o tipo de documento * --</option>
+          <option value="">-- Selecione o tipo de documento primeiro * --</option>
           <option value="CONTRATO_PRESTACAO_SERVICOS">📝 Contrato Prestação Serviços</option>
           <option value="RG_CPF_ATLETA">🪪 RG / CPF do Atleta</option>
           <option value="RG_CPF_RESPONSAVEL">🪪 RG / CPF do Responsável</option>
@@ -527,25 +537,31 @@
           <option value="FOTO_PROJETO">📷 Foto para o Projeto / Eventos</option>
           <option value="OUTROS">📁 Outros Documentos</option>
         </select>
+        <div id="avisoModalTipoObrigatorio" style="display:block; color:#d9534f; font-size:11.5px; font-weight:700; margin-top:5px;">
+          ⚠️ Passo 1: Selecione o tipo de documento acima para liberar a escolha do arquivo.
+        </div>
       </div>
 
       <div class="campo" style="margin-bottom:14px; text-align:left;">
         <label style="font-weight:700; color:#2d5a4c; display:block; margin-bottom:6px; font-size:13px;">
-          Foto ou Arquivo (PDF / Imagem): <span style="color:#d9534f;">*</span>
+          2º Passo: Foto ou Arquivo (PDF / Imagem): <span style="color:#d9534f; font-weight:800;">* (OBRIGATÓRIO)</span>
         </label>
         <input type="file" id="modalInputFile" accept="image/*,application/pdf" style="display:none;" onchange="window.aoSelecionarArquivoModal(this)">
-        <div id="modalDropZone" class="modal-drop-zone" onclick="document.getElementById('modalInputFile').click()">
+        <div id="modalDropZone" class="modal-drop-zone bloqueado" onclick="window.clicarDropZoneModal(event)">
           <div id="modalDropZonePrompt">
-            <div style="font-size:26px; margin-bottom:4px;">📂</div>
-            <div style="font-size:13px; font-weight:700; color:#2d5a4c;">Clique ou arraste o arquivo aqui</div>
-            <div style="font-size:11px; color:#666; margin-top:3px;">Aceita fotos (JPG, PNG) ou documentos (PDF)</div>
+            <div style="font-size:26px; margin-bottom:4px;">🔒</div>
+            <div id="txtDropZoneTitle" style="font-size:13px; font-weight:700; color:#666;">Selecione o tipo de documento acima primeiro</div>
+            <div id="txtDropZoneSubtitle" style="font-size:11px; color:#888; margin-top:3px;">A seleção de arquivo será liberada após escolher a categoria</div>
           </div>
           <div id="modalFileSelectedInfo" style="display:none; text-align:center; padding:4px;">
             <div style="font-size:24px; margin-bottom:2px;">📄</div>
             <div id="modalFileNameTxt" style="font-size:13px; font-weight:700; color:#1e3d33; word-break:break-all;"></div>
             <div id="modalFileSizeTxt" style="font-size:11px; color:#666; margin-top:2px;"></div>
-            <button type="button" class="btn-trocar-arquivo" onclick="event.stopPropagation(); document.getElementById('modalInputFile').click();">🔄 Trocar Arquivo</button>
+            <button type="button" class="btn-trocar-arquivo" onclick="event.stopPropagation(); window.clicarDropZoneModal(event);">🔄 Trocar Arquivo</button>
           </div>
+        </div>
+        <div id="avisoModalArquivoObrigatorio" style="display:none; color:#d9534f; font-size:11px; font-weight:700; margin-top:4px;">
+          ⚠️ Selecione ou tire uma foto/arquivo para anexar.
         </div>
       </div>
 
@@ -1543,7 +1559,10 @@
       window.arquivoPendenteModal = null;
 
       var selTipo = document.getElementById('modalAnexoTipo');
-      if (selTipo) selTipo.value = '';
+      if (selTipo) {
+        selTipo.value = '';
+        selTipo.style.borderColor = '#d9534f';
+      }
 
       var inputFile = document.getElementById('modalInputFile');
       if (inputFile) inputFile.value = '';
@@ -1553,6 +1572,12 @@
 
       var fileInfo = document.getElementById('modalFileSelectedInfo');
       if (fileInfo) fileInfo.style.display = 'none';
+
+      var avisoTipo = document.getElementById('avisoModalTipoObrigatorio');
+      if (avisoTipo) avisoTipo.style.display = 'block';
+
+      var avisoArq = document.getElementById('avisoModalArquivoObrigatorio');
+      if (avisoArq) avisoArq.style.display = 'none';
 
       window.validarFormModalAnexo();
 
@@ -1567,7 +1592,10 @@
           dropZone.addEventListener(evt, function(e) {
             e.preventDefault();
             e.stopPropagation();
-            dropZone.classList.add('dragover');
+            var sel = document.getElementById('modalAnexoTipo');
+            if (sel && sel.value.trim() !== '') {
+              dropZone.classList.add('dragover');
+            }
           });
         });
         ['dragleave', 'drop'].forEach(function(evt) {
@@ -1578,11 +1606,46 @@
           });
         });
         dropZone.addEventListener('drop', function(e) {
+          var sel = document.getElementById('modalAnexoTipo');
+          if (!sel || !sel.value.trim()) {
+            alert("⚠️ Selecione primeiro o Tipo do Documento no menu suspenso antes de soltar o arquivo.");
+            if (sel) {
+              sel.style.borderColor = '#d9534f';
+              sel.focus();
+            }
+            return;
+          }
           var dt = e.dataTransfer;
           if (dt && dt.files && dt.files[0]) {
             window.processarArquivoModal(dt.files[0]);
           }
         });
+      }
+    };
+
+    window.clicarDropZoneModal = function(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      var selTipo = document.getElementById('modalAnexoTipo');
+      var tipoVal = selTipo ? selTipo.value.trim() : '';
+
+      if (!tipoVal) {
+        if (selTipo) {
+          selTipo.style.borderColor = '#d9534f';
+          selTipo.focus();
+        }
+        var avisoTipo = document.getElementById('avisoModalTipoObrigatorio');
+        if (avisoTipo) avisoTipo.style.display = 'block';
+        alert("⚠️ Selecione primeiro o Tipo do Documento!\n\nNo passo 1, selecione a categoria correspondente no menu suspenso antes de escolher o arquivo.");
+        return;
+      }
+
+      var inputFile = document.getElementById('modalInputFile');
+      if (inputFile) {
+        inputFile.value = '';
+        inputFile.click();
       }
     };
 
@@ -1593,6 +1656,18 @@
     };
 
     window.aoSelecionarArquivoModal = function(input) {
+      var selTipo = document.getElementById('modalAnexoTipo');
+      var tipoVal = selTipo ? selTipo.value.trim() : '';
+      if (!tipoVal) {
+        alert("⚠️ Selecione primeiro o Tipo do Documento antes de anexar o arquivo.");
+        if (selTipo) {
+          selTipo.style.borderColor = '#d9534f';
+          selTipo.focus();
+        }
+        input.value = '';
+        return;
+      }
+
       if (input.files && input.files[0]) {
         window.processarArquivoModal(input.files[0]);
       }
@@ -1626,29 +1701,6 @@
         var sizeTxt = document.getElementById('modalFileSizeTxt');
         if (sizeTxt) sizeTxt.innerText = sizeFormatted;
 
-        // Sugestão automática de categoria caso ainda não tenha sido escolhida
-        var selTipo = document.getElementById('modalAnexoTipo');
-        if (selTipo && !selTipo.value) {
-          var nLower = file.name.toLowerCase();
-          if (nLower.includes('contrat') || nLower.includes('prestacao')) {
-            selTipo.value = 'CONTRATO_PRESTACAO_SERVICOS';
-          } else if (nLower.includes('atestad') || nLower.includes('medic') || nLower.includes('laudo')) {
-            selTipo.value = 'ATESTADO_MEDICO';
-          } else if (nLower.includes('rg') || nLower.includes('cpf')) {
-            selTipo.value = 'RG_CPF_ATLETA';
-          } else if (nLower.includes('cidadao') || nLower.includes('cartao')) {
-            selTipo.value = 'CARTAO_CIDADAO';
-          } else if (nLower.includes('endereco') || nLower.includes('residencia') || nLower.includes('comprovante')) {
-            selTipo.value = 'COMPROVANTE_ENDERECO';
-          } else if (nLower.includes('escol') || nLower.includes('boletim') || nLower.includes('declaracao')) {
-            selTipo.value = 'BOLETIM_ESCOLAR';
-          } else if (nLower.includes('imagem') || nLower.includes('autoriz')) {
-            selTipo.value = 'AUTORIZACAO_USO_IMAGEM';
-          } else if (nLower.includes('foto') || nLower.includes('evento')) {
-            selTipo.value = 'FOTO_PROJETO';
-          }
-        }
-
         window.validarFormModalAnexo();
       };
       reader.readAsDataURL(file);
@@ -1657,8 +1709,37 @@
     window.validarFormModalAnexo = function() {
       var selTipo = document.getElementById('modalAnexoTipo');
       var btnConfirmar = document.getElementById('btnConfirmarAnexoModal');
-      var tipoVal = selTipo ? selTipo.value : '';
+      var avisoTipo = document.getElementById('avisoModalTipoObrigatorio');
+      var avisoArq = document.getElementById('avisoModalArquivoObrigatorio');
+      var dropZone = document.getElementById('modalDropZone');
+      var txtDropTitle = document.getElementById('txtDropZoneTitle');
+      var txtDropSub = document.getElementById('txtDropZoneSubtitle');
+      var tipoVal = selTipo ? selTipo.value.trim() : '';
       var temArquivo = !!(window.arquivoPendenteModal && window.arquivoPendenteModal.base64);
+
+      if (selTipo) {
+        if (!tipoVal) {
+          selTipo.style.borderColor = '#d9534f';
+          if (avisoTipo) avisoTipo.style.display = 'block';
+          if (dropZone) {
+            dropZone.classList.add('bloqueado');
+            if (txtDropTitle) txtDropTitle.innerText = 'Selecione o tipo de documento acima primeiro';
+            if (txtDropSub) txtDropSub.innerText = 'A seleção de arquivo será liberada após escolher a categoria';
+          }
+        } else {
+          selTipo.style.borderColor = '#2d5a4c';
+          if (avisoTipo) avisoTipo.style.display = 'none';
+          if (dropZone) {
+            dropZone.classList.remove('bloqueado');
+            if (txtDropTitle) txtDropTitle.innerText = 'Clique ou arraste o arquivo aqui';
+            if (txtDropSub) txtDropSub.innerText = 'Aceita fotos (JPG, PNG) ou documentos (PDF)';
+          }
+        }
+      }
+
+      if (avisoArq) {
+        avisoArq.style.display = (!temArquivo && tipoVal) ? 'none' : 'none';
+      }
 
       if (btnConfirmar) {
         if (tipoVal && temArquivo) {
@@ -1675,9 +1756,23 @@
 
     window.confirmarNovoAnexo = function() {
       var selTipo = document.getElementById('modalAnexoTipo');
-      var tipoVal = selTipo ? selTipo.value : '';
-      if (!tipoVal || !window.arquivoPendenteModal) {
-        alert("⚠️ Por favor, selecione a categoria do documento e o arquivo antes de confirmar.");
+      var tipoVal = selTipo ? selTipo.value.trim() : '';
+      
+      if (!tipoVal) {
+        if (selTipo) {
+          selTipo.style.borderColor = '#d9534f';
+          selTipo.focus();
+        }
+        var avisoTipo = document.getElementById('avisoModalTipoObrigatorio');
+        if (avisoTipo) avisoTipo.style.display = 'block';
+        alert("⚠️ Tipo de documento obrigatório!\n\nPor favor, selecione qual é o tipo de documento no menu suspenso antes de adicionar.");
+        return;
+      }
+
+      if (!window.arquivoPendenteModal || !window.arquivoPendenteModal.base64) {
+        var avisoArq = document.getElementById('avisoModalArquivoObrigatorio');
+        if (avisoArq) avisoArq.style.display = 'block';
+        alert("⚠️ Arquivo obrigatório!\n\nPor favor, escolha ou tire uma foto/arquivo para anexar.");
         return;
       }
 
