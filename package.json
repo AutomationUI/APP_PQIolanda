@@ -5,7 +5,7 @@
   "main": "Index.html",
   "scripts": {
     "dev": "node server.js",
-    "build": "mkdir -p dist && cp Index.html dist/index.html 2>/dev/null || true",
+    "build": "mkdir -p dist && cp index.html dist/index.html 2>/dev/null || true",
     "start": "node server.js"
   },
   "keywords": [],

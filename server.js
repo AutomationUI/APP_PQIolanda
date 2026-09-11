@@ -51,7 +51,7 @@ const CODIGOS_VALIDOS = ['PARQUE2026', 'PARQUEUSP', 'ADMIN2026'];
 
 // Handle Google Apps Script endpoint calls (locally or proxied)
 const handleAppsScriptAction = async (req, res) => {
-  const targetGASUrl = process.env.GOOGLE_APPS_SCRIPT_URL || process.env.APPS_SCRIPT_URL;
+  const targetGASUrl = process.env.GOOGLE_APPS_SCRIPT_URL || process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbxCYfObLMiG7DDkxEpNcAEkoGSocNdBw-CB2L1BGQ6gbNmwYRZfPUCEYLorRA3Kf9Mh/exec';
 
   // If a real Google Apps Script URL is configured in environment, proxy the request
   if (targetGASUrl && targetGASUrl.startsWith('https://script.google.com/')) {
