@@ -97,6 +97,76 @@
       font-weight: 500; 
     }
 
+    /* BARRA DE STATUS DO PROGRESSO GERAL NO FRONTEND */
+    .status-progresso-card {
+      background: #f7faf8;
+      border: 1px solid #d8e5df;
+      border-radius: 12px;
+      padding: clamp(10px, 1.8vw, 14px) clamp(12px, 2vw, 16px);
+      margin-bottom: clamp(12px, 2vw, 16px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .status-progresso-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .status-progresso-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .status-progresso-badge {
+      background: #e2ece7;
+      color: #1e3d33;
+      font-size: clamp(9.5px, 1.5vw, 11px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .status-progresso-nome {
+      font-size: clamp(12px, 1.8vw, 13.5px);
+      font-weight: 700;
+      color: #2c3e50;
+    }
+    .status-progresso-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .status-progresso-porcentagem {
+      font-size: clamp(13px, 2vw, 15px);
+      font-weight: 800;
+      color: var(--cor-primaria);
+    }
+    .status-progresso-legenda {
+      font-size: clamp(10.5px, 1.5vw, 11.5px);
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .status-progresso-trilho {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 9999px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .status-progresso-preenchimento {
+      height: 100%;
+      width: 25%;
+      background: linear-gradient(90deg, #2d5a4c 0%, #3b7a67 50%, #489b83 100%);
+      border-radius: 9999px;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     .aba-header { 
       display: grid; 
       grid-template-columns: repeat(4, 1fr); 
@@ -186,6 +256,11 @@
       border-color: #a7d3c3;
       background: #f0f9f5;
       color: #1e3d33;
+    }
+    .step-btn.concluido .step-num::before {
+      content: '✓ ';
+      color: #2d5a4c;
+      font-weight: 800;
     }
 
     .box-busca-edicao {
@@ -289,6 +364,53 @@
     .campo-invalido { 
       border: 2px solid #e74c3c !important; 
       background-color: #fdf2f2 !important; 
+    }
+    #cepAtleta {
+      transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    #cepAtleta.campo-invalido {
+      border: 2px solid #e74c3c !important;
+      background-color: #fdf2f2 !important;
+      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15) !important;
+    }
+
+    /* TOOLTIP ORIENTATIVO DO CEP */
+    .tooltip-cep {
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 0;
+      background: #1f2937;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      line-height: 1.35;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+      z-index: 60;
+      white-space: normal;
+      width: max-content;
+      max-width: min(320px, 92vw);
+    }
+    .tooltip-cep::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 18px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #1f2937 transparent transparent transparent;
+    }
+    #cepAtleta:focus ~ .tooltip-cep,
+    .tooltip-cep.visivel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
 
     /* SISTEMA DE GRID FLUIDO AUTO-RESPONSIVO BASEADO NO ESPAÇO DISPONÍVEL */
@@ -642,24 +764,90 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 999999;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
       padding: 16px;
     }
+    .loading-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: clamp(20px, 3.5vw, 28px) clamp(16px, 3vw, 24px);
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .progresso-trilho {
+      width: 100%;
+      height: 12px;
+      background-color: #e5e7eb;
+      border-radius: 9999px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .progresso-barra {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2d5a4c 0%, #3b7a67 60%, #489b83 100%);
+      border-radius: 9999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .progresso-barra::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.25) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.25) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 24px 24px;
+      animation: barraListras 1.2s linear infinite;
+    }
+    @keyframes barraListras {
+      0% { background-position: 0 0; }
+      100% { background-position: 24px 0; }
+    }
+    .alerta-nao-fechar {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background-color: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      color: #92400e;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: left;
+      margin-top: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
     .spinner {
-      width: 42px;
-      height: 42px;
-      border: 4px solid #f3f3f3;
+      width: 44px;
+      height: 44px;
+      border: 4px solid #e5e7eb;
       border-top: 4px solid var(--cor-primaria);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.9s linear infinite;
       margin-bottom: 12px;
     }
     @keyframes spin {
@@ -670,10 +858,59 @@
 </head>
 <body>
 
-  <!-- MODAL SPINNER / LOADING -->
-  <div id="modalLoading" class="spinner-overlay" style="display:none;">
-    <div class="spinner"></div>
-    <div id="txtLoadingMsg">Processando arquivo e salvando no Google Drive...</div>
+  <!-- MODAL SPINNER / LOADING COM BARRA DE STATUS -->
+  <div id="modalLoading" class="spinner-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="titLoading">
+    <div class="loading-card" id="cardLoading">
+      <div class="spinner" id="spinnerLoading"></div>
+      <h3 id="titLoading" style="margin:0 0 6px 0; color:#1e3d33; font-size:16.5px; font-weight:700;">Finalizando Inscrição...</h3>
+      <div id="txtLoadingMsg" style="color:#4b5563; font-size:13px; font-weight:500; margin-bottom:10px; line-height:1.4;">Processando dados e salvando no Google Drive...</div>
+      
+      <!-- BARRA DE STATUS / PROGRESSO -->
+      <div id="boxBarraProgresso" style="display:none; width:100%; margin:8px 0 12px 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:600; color:#374151; margin-bottom:6px;">
+          <span id="labelFaseProgresso" style="display:flex; align-items:center; gap:4px;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2d5a4c;"></span>
+            <span>Transmitindo informações...</span>
+          </span>
+          <span id="labelPorcentagemProgresso" style="color:#2d5a4c; font-weight:700; font-size:12.5px;">15%</span>
+        </div>
+        <div class="progresso-trilho">
+          <div id="barraProgressoInterna" class="progresso-barra" style="width: 15%;"></div>
+        </div>
+      </div>
+
+      <!-- ALERTA PARA NÃO FECHAR A JANELA -->
+      <div id="avisoNaoFechar" class="alerta-nao-fechar" style="display:none;">
+        <span style="font-size:18px; line-height:1; flex-shrink:0;">⚠️</span>
+        <div>
+          <strong style="color:#78350f;">Atenção: Não feche esta janela</strong> nem recarregue a página enquanto os dados e arquivos estão sendo gravados com segurança.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE SUCESSO: DADOS INSERIDOS COM SUCESSO E BOTÃO PARA FECHAR O SISTEMA -->
+  <div id="modalSucessoGravacao" class="spinner-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="titSucessoGravacao">
+    <div class="loading-card" style="max-width:440px; text-align:center;">
+      <div style="font-size:46px; margin-bottom:6px; line-height:1;">✅</div>
+      <h3 id="titSucessoGravacao" style="color:#1e3d33; font-size:18.5px; margin:0 0 8px 0; font-weight:700;">Os dados foram inseridos com sucesso!</h3>
+      <p style="color:#4b5563; font-size:13.5px; line-height:1.45; margin:0 0 14px 0;">
+        A inscrição foi finalizada e todos os dados e arquivos foram gravados com segurança.
+      </p>
+      
+      <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:8px; padding:10px 14px; margin-bottom:16px; width:100%; box-sizing:border-box;">
+        <span style="font-size:11px; color:#166534; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">ID ÚNICO DO ATLETA:</span><br>
+        <b style="font-size:18px; color:#166534;" id="modalResIdAtleta">PQI-00000000-0000</b>
+      </div>
+
+      <button type="button" class="btn-sucesso" id="btnFecharSistemaModal" onclick="window.fecharSistema()" style="width:100%; padding:13px; font-size:15px; font-weight:700; background:#2d5a4c; box-shadow:0 4px 12px rgba(45,90,76,0.25); margin-bottom:10px; cursor:pointer;">
+        🚪 Fechar Sistema
+      </button>
+
+      <a href="#" id="btnModalWhats" target="_blank" class="btn-whats" style="width:100%; box-sizing:border-box; text-decoration:none; padding:10px; font-size:13px; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+        📲 Salvar Comprovante no WhatsApp
+      </a>
+    </div>
   </div>
 
   <!-- MODAL TERMOS LEITURA OBRIGATÓRIA -->
@@ -763,31 +1000,147 @@
     </div>
   </div>
 
-  <!-- TELA SUCESSO -->
-  <div class="container" id="sucessoScreen" style="display:none;">
-    <div class="logo-container"><img src="https://lh3.googleusercontent.com/d/1SFhdXMU6wW7VBSybXHFnYJ9t-g6tLgjd"></div>
-    <div class="alerta-box alerta-sucesso" style="text-align:center; display:block;">
-      <h3 style="margin:5px 0;">🎉 Inscrição Concluída!</h3>
-      <p style="margin:5px 0;">A foto e os anexos foram gravados no Google Drive.</p>
-      <div style="background:white; padding:10px; border-radius:6px; margin:10px 0; border:1px solid #c3e6cb;">
-        <span style="font-size:12px; color:#555;">ID ÚNICO DO ATLETA:</span><br>
-        <b style="font-size:18px; color:#2d5a4c;" id="resIdAtleta">PQI-00000000-0000</b>
+  <!-- TELA DEDICADA DE LOGIN / PORTAL DE ACESSO AO SISTEMA -->
+  <div class="container" id="loginScreen" style="max-width: min(100%, 480px); min-height: auto; padding-bottom: clamp(24px, 4vw, 36px); display: flex; flex-direction: column;">
+    <div class="logo-container"><img src="https://lh3.googleusercontent.com/d/1SFhdXMU6wW7VBSybXHFnYJ9t-g6tLgjd" alt="Logo Parque Iolanda"></div>
+    <h2>Acesso ao Sistema</h2>
+    <p class="subtitulo">Projeto Social PARQUE IOLANDA — Vinhedo/SP</p>
+
+    <!-- BADGE DE SEGURANÇA -->
+    <div style="background: #eef7f3; border: 1px solid #c2ded0; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; text-align: center;">
+      <span style="font-size: 13px; font-weight: 800; color: #1e3d33; letter-spacing: 0.3px; text-transform: uppercase;">
+        🔒 Portal Restrito aos Membros e Atletas
+      </span>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid #d4dfd9; border-radius: 12px; padding: clamp(16px, 3vw, 22px); margin-bottom: 18px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+      <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 24px; line-height: 1.2;">🔑</span>
+        <div style="font-size: 13.5px; color: #2d5a4c; line-height: 1.45;">
+          <b>Código do Grupo do WhatsApp:</b><br>
+          <span style="color: #4b635b;">Digite a <b>senha/código oficial</b> para liberar o acesso à ficha de inscrição e serviços do sistema.</span>
+        </div>
       </div>
-      <a href="#" id="btnWhatsConfirm" target="_blank" class="btn-whats">📲 Enviar Confirmação no WhatsApp</a>
-      <button type="button" style="margin-top:10px; background:#6c757d;" onclick="location.reload()">🔄 Fazer Novo Cadastro</button>
+
+      <form id="formLogin" onsubmit="event.preventDefault(); window.executarLogin();" style="text-align: left;">
+        <div class="campo" style="margin-bottom: 18px;">
+          <label for="inputLoginCodigo" style="font-size: 13.5px; font-weight: 700; color: #2c3e50; margin-bottom: 6px; display: block;">
+            🔑 Senha / Código de Acesso: <span style="color:red;">*</span>
+          </label>
+          <div style="position: relative; display: flex; align-items: center;">
+            <input 
+              type="text" 
+              id="inputLoginCodigo" 
+              placeholder="Ex: SENHA DO GRUPO" 
+              style="width: 100%; padding: 13px 46px 13px 14px; font-size: 16px; font-weight: 700; border: 2px solid #bcd3c7; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px;"
+              autocomplete="off"
+              autocapitalize="characters"
+              autofocus
+            >
+            <button 
+              type="button" 
+              id="btnToggleVisibility" 
+              onclick="window.toggleVisibilidadeSenhaLogin()" 
+              style="position: absolute; right: 8px; background: transparent; border: none; font-size: 18px; cursor: pointer; padding: 6px; width: auto; box-shadow: none; color: #556b63;" 
+              title="Alternar visibilidade"
+            >
+              👁️
+            </button>
+          </div>
+          <div id="avisoErroLogin" style="display: none; color: #c0392b; font-size: 12px; font-weight: 700; margin-top: 6px;">
+            ⚠️ Por favor, informe o código de acesso divulgado no grupo do WhatsApp.
+          </div>
+        </div>
+
+        <button type="submit" id="btnEntrarLogin" class="btn-sucesso" style="font-size: 15px; font-weight: 700; padding: 14px; width: 100%; box-shadow: 0 4px 12px rgba(45, 90, 76, 0.25);">
+          🔓 ACESSAR O SISTEMA ➔
+        </button>
+      </form>
+    </div>
+
+    <div style="font-size: 12px; color: #6b7f77; line-height: 1.4; padding-top: 6px;">
+      💬 <i>Ainda não possui a senha? Solicite aos coordenadores no grupo oficial de WhatsApp do Parque Iolanda.</i>
     </div>
   </div>
 
+  <!-- TELA SUCESSO -->
+  <div class="container" id="sucessoScreen" style="display:none;">
+    <div class="logo-container"><img src="https://lh3.googleusercontent.com/d/1SFhdXMU6wW7VBSybXHFnYJ9t-g6tLgjd" alt="Logo Parque Iolanda"></div>
+    <div class="alerta-box alerta-sucesso" style="text-align:center; display:block;">
+      <div style="font-size:36px; margin-bottom:4px;">🎉</div>
+      <h3 style="margin:4px 0 6px 0; color:#1e3d33; font-size:19px;">Inscrição Concluída!</h3>
+      <div style="background:#eef8f3; border:1px solid #b7dfca; border-radius:8px; padding:10px; margin:8px 0 12px 0;">
+        <p style="margin:0; font-weight:700; color:#1e3d33; font-size:15px;">Os dados foram inseridos com sucesso!</p>
+        <p style="margin:4px 0 0 0; font-size:12.5px; color:#4b5563;">A foto, os anexos e a ficha foram gravados no sistema.</p>
+      </div>
+      <div style="background:white; padding:12px; border-radius:8px; margin:12px 0; border:1px solid #c3e6cb;">
+        <span style="font-size:11.5px; color:#555; font-weight:700; text-transform:uppercase;">ID ÚNICO DO ATLETA:</span><br>
+        <b style="font-size:19px; color:#2d5a4c;" id="resIdAtleta">PQI-00000000-0000</b>
+      </div>
+      <a href="#" id="btnWhatsConfirm" target="_blank" class="btn-whats" style="margin-bottom:12px;">📲 Enviar Confirmação no WhatsApp</a>
+      <button type="button" class="btn-sucesso" id="btnFecharSistemaSucesso" style="width:100%; padding:13px; font-size:15px; font-weight:700; background:#2d5a4c; box-shadow:0 4px 12px rgba(45,90,76,0.25); margin-bottom:10px; cursor:pointer;" onclick="window.fecharSistema()">
+        🚪 Fechar Sistema
+      </button>
+      <button type="button" style="margin-top:4px; background:#6c757d; padding:9px 14px; font-size:12.5px;" onclick="location.reload()">🔄 Fazer Novo Cadastro</button>
+    </div>
+  </div>
+
+  <!-- TELA DE SISTEMA ENCERRADO / FECHADO -->
+  <div class="container" id="telaSistemaEncerrado" style="display:none; flex-direction:column; align-items:center; text-align:center; padding:clamp(28px, 5vw, 44px) clamp(16px, 3vw, 24px);">
+    <div class="logo-container"><img src="https://lh3.googleusercontent.com/d/1SFhdXMU6wW7VBSybXHFnYJ9t-g6tLgjd" alt="Logo Parque Iolanda"></div>
+    <div style="font-size:46px; margin:10px 0 6px 0;">🔒</div>
+    <h2 style="color:#1e3d33; margin-bottom:8px;">Sistema Fechado</h2>
+    <div class="alerta-box alerta-sucesso" style="max-width:440px; margin:0 auto 16px auto; text-align:center;">
+      ✅ <b>Os dados foram inseridos com sucesso!</b><br>
+      Sua sessão foi finalizada e todos os arquivos e dados foram gravados com total segurança.
+    </div>
+    <p style="color:#4b5563; font-size:14px; line-height:1.5; max-width:420px; margin-bottom:20px;">
+      Você já pode fechar esta aba ou janela no seu navegador.
+    </p>
+    <button type="button" class="btn-secundario" style="width:auto; padding:10px 22px; font-size:13px;" onclick="location.reload()">
+      🔄 Reabrir Sistema
+    </button>
+  </div>
+
   <!-- APP PRINCIPAL -->
-  <div class="container" id="appContent">
+  <div class="container" id="appContent" style="display:none;">
     <div class="logo-container"><img src="https://lh3.googleusercontent.com/d/1SFhdXMU6wW7VBSybXHFnYJ9t-g6tLgjd"></div>
     <h2>Ficha de Inscrição</h2>
     <p class="subtitulo">Projeto PARQUE IOLANDA - Vinhedo/SP</p>
+
+    <!-- BARRA DE STATUS DE LOGIN / CÓDIGO CONECTADO -->
+    <div id="barraStatusLogin" style="display:flex; justify-content:space-between; align-items:center; background:#eff7f4; border:1px solid #c2ded0; padding:8px 12px; border-radius:8px; margin-bottom:14px; font-size:12px; color:#1e3d33;">
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <span>🔑 <b>Acesso Liberado:</b></span>
+        <span id="badgeCodigoLogado" style="background:#ffffff; padding:2px 8px; border-radius:4px; font-weight:800; border:1px solid #adc7bb; color:#2d5a4c; letter-spacing:0.5px;">-</span>
+      </div>
+      <button type="button" id="btnSairTrocarLogin" onclick="window.fazerLogout()" style="width:auto; padding:6px 12px; font-size:12px; background:#ffffff; color:#c0392b; border:1px solid #e0b4b4; border-radius:6px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:4px;" title="Trocar ou sair do código atual">
+        🚪 Sair / Trocar
+      </button>
+    </div>
 
     <!-- DETECTOR DE WEBVIEW -->
     <div id="avisoWebView" class="alerta-box alerta-alerta" style="display:none;">
       ⚠️ <b>Você está utilizando o navegador embutido do aplicativo (ex: WhatsApp/Instagram/Facebook).</b><br>
       A câmera ao vivo pode estar bloqueada pelo aplicativo. Para tirar sua foto 3x4, utilize o botão <b>"📷 Tirar Foto (Câmera Nativa)"</b> ou toque no menu (<b>⋮</b> ou <b>...</b>) e selecione <b>"Abrir no navegador"</b> (Chrome ou Safari).
+    </div>
+
+    <!-- BANNER DE RASCUNHO RESTAURADO -->
+    <div id="bannerRascunhoRestaurado" class="alerta-box alerta-sucesso" style="display:none; margin-bottom:14px; position:relative; border-left: 4px solid #27ae60;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div style="flex:1; min-width:200px;">
+          📝 <b>Rascunho recuperado:</b> Seus dados preenchidos anteriormente foram restaurados automaticamente.
+          <div style="font-size:11px; opacity:0.85; margin-top:2px; color:#03543f;" id="txtHorarioRascunho"></div>
+        </div>
+        <button type="button" onclick="window.limparRascunho(true)" style="width:auto; padding:6px 12px; font-size:11.5px; background:#c0392b !important; color:white; border-radius:6px; box-shadow:none; cursor:pointer;" title="Descartar este rascunho e iniciar em branco">
+          🗑️ Descartar Rascunho
+        </button>
+      </div>
+    </div>
+
+    <!-- INDICADOR DE SALVAMENTO AUTOMÁTICO -->
+    <div id="indicadorAutoSave" style="display:none; font-size:11px; color:#2d5a4c; font-weight:600; margin-top:-10px; margin-bottom:12px; text-align:right; transition:opacity 0.3s ease;">
+      💾 <span id="txtAutoSaveStatus">Rascunho salvo automaticamente</span>
     </div>
 
     <!-- BUSCA DE EDIÇÃO -->
@@ -801,6 +1154,23 @@
 
     <div id="bannerModoEdicao" class="alerta-box alerta-sucesso" style="display:none;">
       ✏️ <b>Modo de Edição Ativo:</b> Editando dados do atleta <b id="lblIdEdicao"></b>.
+    </div>
+
+    <!-- BARRA DE STATUS DO PROGRESSO GERAL NO FRONTEND -->
+    <div class="status-progresso-card" id="statusProgressoCard">
+      <div class="status-progresso-topo">
+        <div class="status-progresso-info">
+          <span class="status-progresso-badge" id="statusBadgeEtapa">ETAPA 1 DE 4</span>
+          <span class="status-progresso-nome" id="statusNomeEtapa">Foto 3x4 do Atleta</span>
+        </div>
+        <div class="status-progresso-meta">
+          <span class="status-progresso-porcentagem" id="statusPctTexto">25%</span>
+          <span class="status-progresso-legenda">concluído</span>
+        </div>
+      </div>
+      <div class="status-progresso-trilho" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" id="statusProgressBarraTrilho">
+        <div class="status-progresso-preenchimento" id="statusProgressBarraPreenchimento" style="width: 25%;"></div>
+      </div>
     </div>
 
     <!-- ABAS (4 ETAPAS HARMONIOSAS) -->
@@ -890,8 +1260,14 @@
     <!-- ABA 2: CRIANÇA & SAÚDE -->
     <div id="aba2" class="aba-conteudo" style="display:none;">
       <div class="campo">
-        <label>🔑 Código do Grupo do WhatsApp: <span style="color:red;">*</span></label>
-        <input type="text" id="codigoAcesso" placeholder="Senha divulgada no grupo">
+        <label>🔑 Código do Grupo do WhatsApp (Autenticado no Login): <span style="color:red;">*</span></label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="codigoAcesso" placeholder="Senha divulgada no grupo" style="font-weight:700; background:#f4f8f6; color:#1e3d33;" readonly>
+          <button type="button" id="btnAlterarCodigoAba2" onclick="window.fazerLogout()" style="width:auto; white-space:nowrap; padding:0 12px; font-size:12px; background:#eff7f4; border:1px solid #ccd9d2; color:#2d5a4c; cursor:pointer; font-weight:700;" title="Alterar código de acesso">
+            🔄 Alterar
+          </button>
+        </div>
+        <small style="color:#556b63; font-size:11px; margin-top:3px; display:block;">✅ Código validado no login inicial.</small>
       </div>
 
       <div class="secao-titulo">DADOS DA CRIANÇA</div>
@@ -939,12 +1315,36 @@
 
       <div class="grid-2">
         <div class="campo">
-          <label>CEP: <span style="color:red;">*</span></label>
-          <input type="text" id="cepAtleta" placeholder="00000-000" oninput="window.mCEP(this)" onblur="window.buscarCEP(this.value)">
+          <label for="cepAtleta">
+            CEP: <span style="color:red;">*</span>
+            <span id="statusBuscaCep" style="font-size:11px; font-weight:700; margin-left:6px; display:none;"></span>
+          </label>
+          <div style="position:relative; display:flex; align-items:center; gap:8px;">
+            <input 
+              type="text" 
+              id="cepAtleta" 
+              placeholder="00000-000" 
+              maxlength="9" 
+              inputmode="numeric"
+              pattern="[0-9]*"
+              oninput="window.mCEP(this)" 
+              onfocus="var t=document.getElementById('tooltipCep'); if(t) t.classList.add('visivel');"
+              onblur="var t=document.getElementById('tooltipCep'); if(t) t.classList.remove('visivel'); window.validarCEPOnBlur(this);"
+              autocomplete="postal-code"
+              aria-describedby="tooltipCep"
+              style="flex: 1; width: 100%;"
+            >
+            <div id="tooltipCep" role="tooltip" class="tooltip-cep" aria-live="polite">
+              <span style="margin-right:4px;">ℹ️</span> Apenas números são aceitos. Formato esperado: <strong>00000-000</strong>
+            </div>
+            <span id="spinnerCep" style="display:none; font-size:15px; user-select:none;" title="Consultando CEP...">⏳</span>
+            <span id="iconeStatusCep" style="display:none; font-size:18px; line-height:1; min-width:22px; text-align:center; user-select:none; cursor:default;" title="" aria-live="polite"></span>
+          </div>
+          <div id="msgAvisoCep" style="display:none; font-size:11px; margin-top:4px; font-weight:600; line-height:1.3;"></div>
         </div>
         <div class="campo">
-          <label>Bairro:</label>
-          <input type="text" id="bairroAtleta">
+          <label for="bairroAtleta">Bairro:</label>
+          <input type="text" id="bairroAtleta" placeholder="Bairro">
         </div>
       </div>
 
@@ -1127,6 +1527,24 @@
         ✅ **Termos de autorização lidos e aceitos com sucesso!**
       </div>
 
+      <!-- BARRA DE STATUS AO FINALIZAR NO FRONTEND -->
+      <div id="statusEnvioFrontendCard" style="display:none; margin: 14px 0 16px 0; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:12px 16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; font-size:13px; color:#166534;" id="statusEnvioFrontendTitulo">
+            ⏳ Gravando Inscrição...
+          </span>
+          <span style="font-weight:800; font-size:13px; color:#166534;" id="statusEnvioFrontendPct">
+            15%
+          </span>
+        </div>
+        <div class="progresso-trilho" style="height:10px;">
+          <div id="statusEnvioFrontendBarra" class="progresso-barra" style="width:15%;"></div>
+        </div>
+        <div style="font-size:11.5px; color:#15803d; margin-top:8px; font-weight:500; display:flex; align-items:center; gap:6px;" id="statusEnvioFrontendMsg">
+          <span>⚠️</span> <span>Transmitindo dados e fotos com segurança. <strong>Não feche nem saia desta janela.</strong></span>
+        </div>
+      </div>
+
       <div class="botoes-nav">
         <button type="button" class="btn-voltar" onclick="window.voltarParaAba(3)">⬅ Voltar</button>
         <button type="button" class="btn-sucesso" id="btnEnviar" onclick="window.enviarDados()">✅ Finalizar Inscrição</button>
@@ -1139,6 +1557,530 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxCYfObLMiG7DDkxEpNcAEkoGSocNdBw-CB2L1BGQ6gbNmwYRZfPUCEYLorRA3Kf9Mh/exec";
 
     // 1. Definir TODAS as funções PRIMEIRO
+    /* ==========================================================================
+       SISTEMA DE AUTENTICAÇÃO / LOGIN COM CÓDIGO DO WHATSAPP
+       ========================================================================== */
+    const STORAGE_KEY_AUTH = 'pqi_codigo_acesso_auth_v1';
+
+    window.obterCodigoAcessoAutenticado = function() {
+      try {
+        return (localStorage.getItem(STORAGE_KEY_AUTH) || '').trim();
+      } catch (e) {
+        return '';
+      }
+    };
+
+    window.definirCodigoAcessoAutenticado = function(cod) {
+      try {
+        if (cod) {
+          localStorage.setItem(STORAGE_KEY_AUTH, cod.trim());
+        } else {
+          localStorage.removeItem(STORAGE_KEY_AUTH);
+        }
+      } catch (e) {}
+    };
+
+    window.executarLogin = function() {
+      var input = document.getElementById('inputLoginCodigo');
+      var avisoErro = document.getElementById('avisoErroLogin');
+      var codigo = input ? input.value.trim() : '';
+
+      if (!codigo) {
+        if (avisoErro) {
+          avisoErro.innerText = "⚠️ Por favor, digite o código de acesso divulgado no grupo do WhatsApp.";
+          avisoErro.style.display = 'block';
+        }
+        if (input) {
+          input.classList.add('campo-invalido');
+          input.focus();
+        }
+        return;
+      }
+
+      if (avisoErro) avisoErro.style.display = 'none';
+      if (input) input.classList.remove('campo-invalido');
+
+      // Salva no armazenamento persistente
+      window.definirCodigoAcessoAutenticado(codigo);
+
+      // Sincroniza campos visuais e do formulário
+      var campoCodigo = document.getElementById('codigoAcesso');
+      if (campoCodigo) campoCodigo.value = codigo;
+
+      var badge = document.getElementById('badgeCodigoLogado');
+      if (badge) badge.innerText = codigo;
+
+      // Oculta tela de login e exibe formulário principal
+      var loginEl = document.getElementById('loginScreen');
+      var appEl = document.getElementById('appContent');
+      if (loginEl) loginEl.style.display = 'none';
+      if (appEl) appEl.style.display = 'flex';
+
+      // Restaura rascunho anterior ou abre na Aba 1
+      var restaurado = window.restaurarRascunho();
+      if (!restaurado) {
+        window.irAba(1, true);
+      }
+
+      // Atualiza rascunho e sobe para o topo
+      window.salvarRascunho();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.fazerLogout = function() {
+      // 1. Limpa código autenticado
+      window.definirCodigoAcessoAutenticado('');
+
+      // 2. Limpa visualmente no formulário
+      var campoCodigo = document.getElementById('codigoAcesso');
+      if (campoCodigo) campoCodigo.value = '';
+
+      var badge = document.getElementById('badgeCodigoLogado');
+      if (badge) badge.innerText = '-';
+
+      var inputLogin = document.getElementById('inputLoginCodigo');
+      if (inputLogin) {
+        inputLogin.value = '';
+        inputLogin.classList.remove('campo-invalido');
+      }
+
+      var avisoErro = document.getElementById('avisoErroLogin');
+      if (avisoErro) avisoErro.style.display = 'none';
+
+      // 3. Oculta app e exibe tela de login imediatamente
+      var loginEl = document.getElementById('loginScreen');
+      var appEl = document.getElementById('appContent');
+      var sucessoEl = document.getElementById('sucessoScreen');
+
+      if (appEl) appEl.style.display = 'none';
+      if (sucessoEl) sucessoEl.style.display = 'none';
+      if (loginEl) {
+        loginEl.style.display = 'flex';
+        setTimeout(function() { 
+          if (inputLogin) inputLogin.focus(); 
+        }, 120);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.toggleVisibilidadeSenhaLogin = function() {
+      var input = document.getElementById('inputLoginCodigo');
+      var btn = document.getElementById('btnToggleVisibility');
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (btn) btn.innerText = '👁️';
+      } else {
+        input.type = 'password';
+        if (btn) btn.innerText = '🔒';
+      }
+    };
+
+    /* ==========================================================================
+       SISTEMA DE RASCUNHO AUTOMÁTICO (LOCALSTORAGE)
+       ========================================================================== */
+    const STORAGE_KEY_RASCUNHO = 'pqi_inscricao_rascunho_v1';
+    window.timerSalvarRascunho = null;
+
+    // Salva o estado atual do formulário no localStorage
+    window.salvarRascunho = function() {
+      try {
+        var etapaAtual = 1;
+        for (var i = 1; i <= 4; i++) {
+          var elAba = document.getElementById('aba' + i);
+          if (elAba && elAba.style.display !== 'none') {
+            etapaAtual = i;
+            break;
+          }
+        }
+
+        var getRadioVal = function(nome) {
+          var radios = document.getElementsByName(nome);
+          for (var r = 0; r < radios.length; r++) {
+            if (radios[r].checked) return radios[r].value;
+          }
+          return "Não";
+        };
+
+        var getVal = function(id) {
+          var el = document.getElementById(id);
+          return el ? el.value : '';
+        };
+
+        var urgencias = [];
+        var urgenciaItems = document.querySelectorAll('#urgenciaContainer .item-urgencia');
+        urgenciaItems.forEach(function(item) {
+          var nomeInput = item.querySelector('[name="urgenciaNome"]');
+          var parentescoInput = item.querySelector('[name="urgenciaParentesco"]');
+          var foneInput = item.querySelector('[name="urgenciaFone"]');
+          var nome = nomeInput ? nomeInput.value : '';
+          var parentesco = parentescoInput ? parentescoInput.value : '';
+          var fone = foneInput ? foneInput.value : '';
+          if (nome || parentesco || fone) {
+            urgencias.push({ nome: nome, parentesco: parentesco, fone: fone });
+          }
+        });
+
+        var retiradas = [];
+        var retirarItems = document.querySelectorAll('#retirarContainer .item-retirar');
+        retirarItems.forEach(function(item) {
+          var nomeInput = item.querySelector('[name="retirarNome"]');
+          var parentescoInput = item.querySelector('[name="retirarParentesco"]');
+          var docInput = item.querySelector('[name="retirarDoc"]');
+          var nome = nomeInput ? nomeInput.value : '';
+          var parentesco = parentescoInput ? parentescoInput.value : '';
+          var doc = docInput ? docInput.value : '';
+          if (nome || parentesco || doc) {
+            retiradas.push({ nome: nome, parentesco: parentesco, doc: doc });
+          }
+        });
+
+        var anexosValidos = (window.listaAnexosBase64 || []).filter(function(item) {
+          return item !== null;
+        });
+
+        var dadosRascunho = {
+          etapaAtual: etapaAtual,
+          etapaMaximaAlcancada: window.etapaMaximaAlcancada || 1,
+          fotoBase64: window.fotoBase64 || '',
+          urlFotoExistente: window.urlFotoExistente || '',
+          idAtletaEdicao: window.idAtletaEdicao || '',
+          linhaEdicao: window.linhaEdicao || '',
+          termosAceitos: !!window.termosAceitos,
+
+          codigoAcesso: getVal('codigoAcesso'),
+          nomeAluno: getVal('nomeAluno'),
+          dataNasc: getVal('dataNasc'),
+          idadeAtleta: getVal('idadeAtleta'),
+          sexoAtleta: getVal('sexoAtleta'),
+          foneAtleta: getVal('foneAtleta'),
+          cpfAtleta: getVal('cpfAtleta'),
+          rgAtleta: getVal('rgAtleta'),
+          cepAtleta: getVal('cepAtleta'),
+          bairroAtleta: getVal('bairroAtleta'),
+          endAtleta: getVal('endAtleta'),
+          cidadeAtleta: getVal('cidadeAtleta'),
+          tipoSangue: getVal('tipoSangue'),
+
+          remedioReg: getRadioVal('remedioReg'),
+          remedioRegDetalhe: getVal('remedioRegDetalhe'),
+          alergiaAtleta: getRadioVal('alergiaAtleta'),
+          alergiaAtletaDetalhe: getVal('alergiaAtletaDetalhe'),
+          restricaoAtleta: getRadioVal('restricaoAtleta'),
+          restricaoAtletaDetalhe: getVal('restricaoAtletaDetalhe'),
+          planoSaude: getRadioVal('planoSaude'),
+          planoSaudeDetalhe: getVal('planoSaudeDetalhe'),
+
+          nomeMae: getVal('nomeMae'),
+          endProfMae: getVal('endProfMae'),
+          foneMae: getVal('foneMae'),
+          celMae: getVal('celMae'),
+          emailMae: getVal('emailMae'),
+          nomePai: getVal('nomePai'),
+          endProfPai: getVal('endProfPai'),
+          fonePai: getVal('fonePai'),
+          celPai: getVal('celPai'),
+
+          urgencias: urgencias,
+          retiradas: retiradas,
+          anexos: anexosValidos,
+
+          timestamp: Date.now(),
+          dataHoraFormatada: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        var temConteudo = !!(
+          dadosRascunho.fotoBase64 ||
+          dadosRascunho.urlFotoExistente ||
+          dadosRascunho.nomeAluno ||
+          dadosRascunho.codigoAcesso ||
+          dadosRascunho.nomeMae ||
+          dadosRascunho.celMae ||
+          dadosRascunho.anexos.length > 0 ||
+          dadosRascunho.idAtletaEdicao
+        );
+
+        if (!temConteudo) {
+          return;
+        }
+
+        try {
+          localStorage.setItem(STORAGE_KEY_RASCUNHO, JSON.stringify(dadosRascunho));
+        } catch (storageErr) {
+          // Se estourar a cota por anexos grandes, salva sem os arquivos pesados preservando os dados
+          if (dadosRascunho.anexos && dadosRascunho.anexos.length > 0) {
+            var rascunhoLeve = Object.assign({}, dadosRascunho);
+            rascunhoLeve.anexos = [];
+            localStorage.setItem(STORAGE_KEY_RASCUNHO, JSON.stringify(rascunhoLeve));
+          }
+        }
+
+        var ind = document.getElementById('indicadorAutoSave');
+        var txtStatus = document.getElementById('txtAutoSaveStatus');
+        if (ind && txtStatus) {
+          txtStatus.innerText = "Rascunho salvo às " + dadosRascunho.dataHoraFormatada;
+          ind.style.display = 'block';
+        }
+      } catch (err) {
+        console.warn("Erro ao salvar rascunho:", err);
+      }
+    };
+
+    window.agendarSalvarRascunho = function() {
+      clearTimeout(window.timerSalvarRascunho);
+      window.timerSalvarRascunho = setTimeout(window.salvarRascunho, 350);
+    };
+
+    window.restaurarRascunho = function() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY_RASCUNHO);
+        if (!raw) return false;
+
+        var d = JSON.parse(raw);
+        if (!d) return false;
+
+        var setVal = function(id, val) {
+          var el = document.getElementById(id);
+          if (el && val !== undefined && val !== null) {
+            el.value = val;
+          }
+        };
+
+        var setRadio = function(nome, val) {
+          var radios = document.getElementsByName(nome);
+          for (var r = 0; r < radios.length; r++) {
+            if (radios[r].value === val) {
+              radios[r].checked = true;
+            }
+          }
+          window.toggleCondicional(nome);
+        };
+
+        var codAuth = window.obterCodigoAcessoAutenticado();
+        if (!codAuth && d.codigoAcesso) {
+          codAuth = d.codigoAcesso;
+          window.definirCodigoAcessoAutenticado(codAuth);
+        }
+        if (codAuth) {
+          setVal('codigoAcesso', codAuth);
+          var badge = document.getElementById('badgeCodigoLogado');
+          if (badge) badge.innerText = codAuth;
+        } else {
+          setVal('codigoAcesso', d.codigoAcesso);
+        }
+        setVal('nomeAluno', d.nomeAluno);
+        setVal('dataNasc', d.dataNasc);
+        if (d.dataNasc) window.calcIdade(d.dataNasc);
+        setVal('sexoAtleta', d.sexoAtleta);
+        setVal('foneAtleta', d.foneAtleta);
+        setVal('cpfAtleta', d.cpfAtleta);
+        setVal('rgAtleta', d.rgAtleta);
+        setVal('cepAtleta', d.cepAtleta);
+        if (d.cepAtleta && window.atualizarIconeFeedbackCEP) {
+          window.atualizarIconeFeedbackCEP(d.cepAtleta);
+        }
+        setVal('bairroAtleta', d.bairroAtleta);
+        setVal('endAtleta', d.endAtleta);
+        setVal('cidadeAtleta', d.cidadeAtleta || 'Vinhedo / SP');
+        setVal('tipoSangue', d.tipoSangue);
+
+        if (d.remedioReg) setRadio('remedioReg', d.remedioReg);
+        setVal('remedioRegDetalhe', d.remedioRegDetalhe);
+        if (d.alergiaAtleta) setRadio('alergiaAtleta', d.alergiaAtleta);
+        setVal('alergiaAtletaDetalhe', d.alergiaAtletaDetalhe);
+        if (d.restricaoAtleta) setRadio('restricaoAtleta', d.restricaoAtleta);
+        setVal('restricaoAtletaDetalhe', d.restricaoAtletaDetalhe);
+        if (d.planoSaude) setRadio('planoSaude', d.planoSaude);
+        setVal('planoSaudeDetalhe', d.planoSaudeDetalhe);
+
+        setVal('nomeMae', d.nomeMae);
+        setVal('endProfMae', d.endProfMae);
+        setVal('foneMae', d.foneMae);
+        setVal('celMae', d.celMae);
+        setVal('emailMae', d.emailMae);
+        setVal('nomePai', d.nomePai);
+        setVal('endProfPai', d.endProfPai);
+        setVal('fonePai', d.fonePai);
+        setVal('celPai', d.celPai);
+
+        if (d.urgencias && d.urgencias.length > 0) {
+          var containerUrg = document.getElementById('urgenciaContainer');
+          if (containerUrg) {
+            containerUrg.innerHTML = '';
+            d.urgencias.forEach(function(u) {
+              var div = document.createElement('div');
+              div.className = 'item-urgencia';
+              div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-urgencia\').remove(); window.salvarRascunho();" aria-label="Remover contato">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="urgenciaNome" placeholder="Nome completo" value="' + (u.nome || '') + '"></div><div class="campo"><label>Parentesco</label><input type="text" name="urgenciaParentesco" placeholder="Ex: Tio, Avô" value="' + (u.parentesco || '') + '"></div></div><div class="campo" style="margin-bottom: 0;"><label>Telefone</label><input type="text" name="urgenciaFone" placeholder="(19) 90000-0000" oninput="window.mTel(this)" value="' + (u.fone || '') + '"></div>';
+              containerUrg.appendChild(div);
+            });
+          }
+        }
+
+        if (d.retiradas && d.retiradas.length > 0) {
+          var containerRet = document.getElementById('retirarContainer');
+          if (containerRet) {
+            containerRet.innerHTML = '';
+            d.retiradas.forEach(function(r) {
+              var div = document.createElement('div');
+              div.className = 'item-retirar';
+              div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-retirar\').remove(); window.salvarRascunho();" aria-label="Remover pessoa autorizada">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="retirarNome" placeholder="Nome completo" value="' + (r.nome || '') + '"></div><div class="campo"><label>Parentesco</label><input type="text" name="retirarParentesco" placeholder="Ex: Avó, Tio" value="' + (r.parentesco || '') + '"></div></div><div class="campo" style="margin-bottom: 0;"><label>Documento (RG/CPF)</label><input type="text" name="retirarDoc" placeholder="Ex: RG 00.000.000-0" value="' + (r.doc || '') + '"></div>';
+              containerRet.appendChild(div);
+            });
+          }
+        }
+
+        if (d.fotoBase64) {
+          window.fotoBase64 = d.fotoBase64;
+          var preview = document.getElementById('preview');
+          if (preview) {
+            preview.src = d.fotoBase64;
+            preview.style.display = 'block';
+          }
+          var placeholder = document.getElementById('txtPlaceholderFoto');
+          if (placeholder) placeholder.style.display = 'none';
+          var botoesContainer = document.getElementById('botoesCameraContainer');
+          if (botoesContainer) botoesContainer.style.display = 'none';
+          var btnRefazer = document.getElementById('btnRefazer');
+          if (btnRefazer) btnRefazer.style.display = 'block';
+        } else if (d.urlFotoExistente) {
+          window.urlFotoExistente = d.urlFotoExistente;
+          var preview2 = document.getElementById('preview');
+          if (preview2) {
+            preview2.src = d.urlFotoExistente;
+            preview2.style.display = 'block';
+          }
+          var placeholder2 = document.getElementById('txtPlaceholderFoto');
+          if (placeholder2) placeholder2.style.display = 'none';
+          var botoesContainer2 = document.getElementById('botoesCameraContainer');
+          if (botoesContainer2) botoesContainer2.style.display = 'none';
+          var btnRefazer2 = document.getElementById('btnRefazer');
+          if (btnRefazer2) btnRefazer2.style.display = 'block';
+        }
+
+        if (d.idAtletaEdicao) {
+          window.idAtletaEdicao = d.idAtletaEdicao;
+          window.linhaEdicao = d.linhaEdicao || '';
+          var bannerEd = document.getElementById('bannerModoEdicao');
+          var lblEd = document.getElementById('lblIdEdicao');
+          if (bannerEd) bannerEd.style.display = 'block';
+          if (lblEd) lblEd.innerText = d.idAtletaEdicao;
+        }
+
+        if (d.anexos && Array.isArray(d.anexos) && d.anexos.length > 0) {
+          window.listaAnexosBase64 = d.anexos;
+          window.renderizarListaAnexos();
+        }
+
+        if (d.termosAceitos) {
+          window.termosAceitos = true;
+          var stTermos = document.getElementById('statusTermosLidos');
+          if (stTermos) stTermos.style.display = 'block';
+        }
+
+        window.etapaMaximaAlcancada = d.etapaMaximaAlcancada || 1;
+        var abaAlvo = d.etapaAtual || 1;
+        window.irAba(abaAlvo, true);
+
+        var bannerRestaurado = document.getElementById('bannerRascunhoRestaurado');
+        var txtHorario = document.getElementById('txtHorarioRascunho');
+        if (bannerRestaurado) {
+          bannerRestaurado.style.display = 'block';
+          if (txtHorario && d.dataHoraFormatada) {
+            txtHorario.innerText = "Última gravação automática: hoje às " + d.dataHoraFormatada;
+          }
+        }
+
+        return true;
+      } catch (e) {
+        console.warn("Erro ao restaurar rascunho:", e);
+        return false;
+      }
+    };
+
+    window.limparRascunho = function(confirmar) {
+      if (confirmar) {
+        var querLimpar = true;
+        try {
+          querLimpar = confirm("Deseja realmente descartar as informações salvas e começar um novo formulário em branco?");
+        } catch (e) {
+          querLimpar = true;
+        }
+        if (!querLimpar) return;
+      }
+
+      try {
+        localStorage.removeItem(STORAGE_KEY_RASCUNHO);
+      } catch (e) {}
+
+      var bannerRestaurado = document.getElementById('bannerRascunhoRestaurado');
+      if (bannerRestaurado) bannerRestaurado.style.display = 'none';
+
+      var ind = document.getElementById('indicadorAutoSave');
+      if (ind) ind.style.display = 'none';
+
+      if (confirmar) {
+        var inputs = document.querySelectorAll('#appContent input[type="text"], #appContent input[type="date"], #appContent textarea');
+        inputs.forEach(function(inp) { if (inp.id !== 'cidadeAtleta' && inp.id !== 'codigoAcesso') inp.value = ''; });
+        document.getElementById('cidadeAtleta').value = 'Vinhedo / SP';
+
+        var codAuthAtual = window.obterCodigoAcessoAutenticado();
+        if (codAuthAtual) {
+          var campoCod = document.getElementById('codigoAcesso');
+          if (campoCod) campoCod.value = codAuthAtual;
+        }
+
+        var selects = document.querySelectorAll('#appContent select');
+        selects.forEach(function(sel) { sel.selectedIndex = 0; });
+
+        ['remedioReg', 'alergiaAtleta', 'restricaoAtleta', 'planoSaude'].forEach(function(grp) {
+          var radios = document.getElementsByName(grp);
+          for (var r = 0; r < radios.length; r++) {
+            radios[r].checked = (radios[r].value === 'Não');
+          }
+          window.toggleCondicional(grp);
+        });
+
+        var containerUrg = document.getElementById('urgenciaContainer');
+        if (containerUrg) {
+          containerUrg.innerHTML = '<div class="item-urgencia"><button type="button" class="btn-remove-item" onclick="this.closest(\'.item-urgencia\').remove(); window.salvarRascunho();" aria-label="Remover contato">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="urgenciaNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="urgenciaParentesco" placeholder="Ex: Tio, Avô"></div></div><div class="campo" style="margin-bottom: 0;"><label>Telefone</label><input type="text" name="urgenciaFone" placeholder="(19) 90000-0000" oninput="window.mTel(this)"></div></div>';
+        }
+        var containerRet = document.getElementById('retirarContainer');
+        if (containerRet) {
+          containerRet.innerHTML = '<div class="item-retirar"><button type="button" class="btn-remove-item" onclick="this.closest(\'.item-retirar\').remove(); window.salvarRascunho();" aria-label="Remover pessoa autorizada">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="retirarNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="retirarParentesco" placeholder="Ex: Avó, Tio"></div></div><div class="campo" style="margin-bottom: 0;"><label>Documento (RG/CPF)</label><input type="text" name="retirarDoc" placeholder="Ex: RG 00.000.000-0"></div></div>';
+        }
+
+        window.reiniciarFoto();
+        window.listaAnexosBase64 = [];
+        window.renderizarListaAnexos();
+
+        window.ultimoCepConsultado = '';
+        var statusCepEl = document.getElementById('statusBuscaCep');
+        if (statusCepEl) statusCepEl.style.display = 'none';
+        var msgAvisoCepEl = document.getElementById('msgAvisoCep');
+        if (msgAvisoCepEl) msgAvisoCepEl.style.display = 'none';
+        var iconeCepEl = document.getElementById('iconeStatusCep');
+        if (iconeCepEl) {
+          iconeCepEl.style.display = 'none';
+          iconeCepEl.innerHTML = '';
+          iconeCepEl.title = '';
+        }
+
+        window.termosAceitos = false;
+        var stTermos = document.getElementById('statusTermosLidos');
+        if (stTermos) stTermos.style.display = 'none';
+
+        window.idAtletaEdicao = "";
+        window.urlFotoExistente = "";
+        window.linhaEdicao = "";
+        var bannerEd = document.getElementById('bannerModoEdicao');
+        if (bannerEd) bannerEd.style.display = 'none';
+
+        window.etapaMaximaAlcancada = 1;
+        window.irAba(1, true);
+      }
+    };
+
     window.calcIdade = function(dataVal) {
       var inputIdade = document.getElementById('idadeAtleta');
       if (!dataVal) {
@@ -1177,6 +2119,7 @@
       window.termosAceitos = true;
       document.getElementById('modalTermos').style.display = 'none';
       document.getElementById('statusTermosLidos').style.display = 'block';
+      window.salvarRascunho();
     };
 
     window.toggleCondicional = function(nomeGrupo) {
@@ -1188,22 +2131,25 @@
         if (val === "Sim") { detalheInput.style.display = 'block'; detalheInput.focus(); }
         else { detalheInput.style.display = 'none'; detalheInput.value = ''; }
       }
+      window.salvarRascunho();
     };
 
     window.adicionarUrgencia = function() {
       var container = document.getElementById('urgenciaContainer');
       var div = document.createElement('div');
       div.className = 'item-urgencia';
-      div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-urgencia\').remove()" aria-label="Remover contato">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="urgenciaNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="urgenciaParentesco" placeholder="Ex: Tio, Avô"></div></div><div class="campo" style="margin-bottom: 0;"><label>Telefone</label><input type="text" name="urgenciaFone" placeholder="(19) 90000-0000" oninput="window.mTel(this)"></div>';
+      div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-urgencia\').remove(); window.salvarRascunho();" aria-label="Remover contato">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="urgenciaNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="urgenciaParentesco" placeholder="Ex: Tio, Avô"></div></div><div class="campo" style="margin-bottom: 0;"><label>Telefone</label><input type="text" name="urgenciaFone" placeholder="(19) 90000-0000" oninput="window.mTel(this)"></div>';
       container.appendChild(div);
+      window.salvarRascunho();
     };
 
     window.adicionarRetirar = function() {
       var container = document.getElementById('retirarContainer');
       var div = document.createElement('div');
       div.className = 'item-retirar';
-      div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-retirar\').remove()" aria-label="Remover pessoa autorizada">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="retirarNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="retirarParentesco" placeholder="Ex: Avó, Tio"></div></div><div class="campo" style="margin-bottom: 0;"><label>Documento (RG/CPF)</label><input type="text" name="retirarDoc" placeholder="Ex: RG 00.000.000-0"></div>';
+      div.innerHTML = '<button type="button" class="btn-remove-item" onclick="this.closest(\'.item-retirar\').remove(); window.salvarRascunho();" aria-label="Remover pessoa autorizada">✕</button><div class="grid-2" style="padding-right: 28px;"><div class="campo"><label>Nome</label><input type="text" name="retirarNome" placeholder="Nome completo"></div><div class="campo"><label>Parentesco</label><input type="text" name="retirarParentesco" placeholder="Ex: Avó, Tio"></div></div><div class="campo" style="margin-bottom: 0;"><label>Documento (RG/CPF)</label><input type="text" name="retirarDoc" placeholder="Ex: RG 00.000.000-0"></div>';
       container.appendChild(div);
+      window.salvarRascunho();
     };
 
     // 1. Função de detecção de WebView (WhatsApp, Instagram, Facebook, Line, WeChat, etc.)
@@ -1241,8 +2187,104 @@
         btnAceitarTermosModal.addEventListener('click', window.confirmarLeituraTermos);
       }
 
-      // Abrir por padrão a Aba 1 (Foto 3x4) ao iniciar o sistema para facilitar os testes diretos
-      window.irAba(1);
+      // Monitoramento automático de digitação e alterações no formulário
+      var appEl = document.getElementById('appContent');
+      if (appEl) {
+        appEl.addEventListener('input', window.agendarSalvarRascunho);
+        appEl.addEventListener('change', window.salvarRascunho);
+      }
+
+      var btnSairTop = document.getElementById('btnSairTrocarLogin');
+      if (btnSairTop) {
+        btnSairTop.addEventListener('click', window.fazerLogout);
+      }
+
+      var btnAltAba2 = document.getElementById('btnAlterarCodigoAba2');
+      if (btnAltAba2) {
+        btnAltAba2.addEventListener('click', window.fazerLogout);
+      }
+
+      var cepInputEl = document.getElementById('cepAtleta');
+      if (cepInputEl) {
+        // Bloqueia teclas não numéricas no teclado físico e cuida do backspace suave no hífen forçado
+        cepInputEl.addEventListener('keydown', function(e) {
+          if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+          var allowedKeys = [
+            'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+            'Home', 'End'
+          ];
+
+          if (allowedKeys.indexOf(e.key) !== -1) {
+            if (e.key === 'Backspace') {
+              var start = this.selectionStart;
+              var end = this.selectionEnd;
+              // Se o cursor estiver exatamente no ou logo após o hífen forçado (ex: "12345-")
+              if (start === end && (start === 6 || (start === 5 && this.value.charAt(5) === '-'))) {
+                e.preventDefault();
+                var digitosAtuais = this.value.replace(/\D/g, "");
+                this.value = digitosAtuais.slice(0, 4);
+                if (window.mCEP) window.mCEP(this);
+                if (window.atualizarIconeFeedbackCEP) window.atualizarIconeFeedbackCEP(this.value);
+                return;
+              }
+            }
+            return;
+          }
+
+          // Bloqueia qualquer caractere que não seja dígito 0-9
+          if (e.key && e.key !== 'Unidentified' && !/^[0-9]$/.test(e.key)) {
+            e.preventDefault();
+          }
+        });
+
+        cepInputEl.addEventListener('paste', function() {
+          setTimeout(function() {
+            if (window.mCEP) window.mCEP(cepInputEl);
+            if (window.atualizarIconeFeedbackCEP) window.atualizarIconeFeedbackCEP(cepInputEl.value);
+            if (window.buscarCEP) window.buscarCEP(cepInputEl.value);
+          }, 60);
+        });
+        cepInputEl.addEventListener('input', function() {
+          if (window.mCEP) window.mCEP(cepInputEl);
+          if (window.atualizarIconeFeedbackCEP) window.atualizarIconeFeedbackCEP(cepInputEl.value);
+        });
+        cepInputEl.addEventListener('focus', function() {
+          var tt = document.getElementById('tooltipCep');
+          if (tt) tt.classList.add('visivel');
+        });
+        cepInputEl.addEventListener('blur', function() {
+          var tt = document.getElementById('tooltipCep');
+          if (tt) tt.classList.remove('visivel');
+          if (window.validarCEPOnBlur) window.validarCEPOnBlur(cepInputEl);
+        });
+        if (cepInputEl.value && window.atualizarIconeFeedbackCEP) {
+          window.atualizarIconeFeedbackCEP(cepInputEl.value);
+        }
+      }
+
+      // Configuração inicial da Tela de Login dedicada
+      var codSalvo = window.obterCodigoAcessoAutenticado();
+      var inputLogin = document.getElementById('inputLoginCodigo');
+      if (inputLogin && codSalvo) {
+        inputLogin.value = codSalvo;
+      }
+
+      var loginScreen = document.getElementById('loginScreen');
+      var appContent = document.getElementById('appContent');
+      
+      // O sistema sempre apresenta a Tela de Login como porta de entrada
+      if (appContent) appContent.style.display = 'none';
+      if (loginScreen) {
+        loginScreen.style.display = 'flex';
+        if (inputLogin) {
+          setTimeout(function() { 
+            inputLogin.focus(); 
+            if (inputLogin.value) inputLogin.select();
+          }, 150);
+        }
+      }
     });
 
     window.carregarCadastroExistente = function() {
@@ -1253,8 +2295,14 @@
       }
 
       var modalLoad = document.getElementById('modalLoading');
+      var titLoad = document.getElementById('titLoading');
       var txtLoad = document.getElementById('txtLoadingMsg');
-      txtLoad.innerText = "Buscando cadastro na planilha...";
+      var boxBarra = document.getElementById('boxBarraProgresso');
+      var avisoNaoFechar = document.getElementById('avisoNaoFechar');
+      if (boxBarra) boxBarra.style.display = 'none';
+      if (avisoNaoFechar) avisoNaoFechar.style.display = 'none';
+      if (titLoad) titLoad.innerText = "Buscando Cadastro...";
+      if (txtLoad) txtLoad.innerText = "Consultando registro na planilha oficial...";
       modalLoad.style.display = 'flex';
 
       fetch(APPS_SCRIPT_URL, {
@@ -1364,9 +2412,16 @@
       // Limpa destaques anteriores
       [codigo, nome, dataNasc, sexo, cep].forEach(function(el) { if (el) el.classList.remove('campo-invalido'); });
 
+      if (codigo && !codigo.value.trim()) {
+        var codAutenticado = window.obterCodigoAcessoAutenticado();
+        if (codAutenticado) {
+          codigo.value = codAutenticado;
+        }
+      }
+
       if (!codigo || !codigo.value.trim()) { 
         if (codigo) codigo.classList.add('campo-invalido'); 
-        erros.push("• Código do Grupo do WhatsApp"); 
+        erros.push("• Código do Grupo do WhatsApp (Faça login novamente)"); 
       }
       if (!nome || !nome.value.trim()) { 
         if (nome) nome.classList.add('campo-invalido'); 
@@ -1380,12 +2435,37 @@
         if (sexo) sexo.classList.add('campo-invalido'); 
         erros.push("• Sexo do Atleta"); 
       }
+      var cepDigitos = cep ? cep.value.replace(/\D/g, "") : "";
       if (!cep || !cep.value.trim()) { 
-        if (cep) cep.classList.add('campo-invalido'); 
-        erros.push("• CEP"); 
+        if (cep) {
+          cep.classList.add('campo-invalido'); 
+          if (typeof window.validarVisualCEP === 'function') {
+            window.validarVisualCEP(cep, true);
+          }
+        }
+        erros.push("• CEP (Obrigatório preencher)"); 
+      } else if (cepDigitos.length !== 8) {
+        if (cep) {
+          cep.classList.add('campo-invalido'); 
+          if (typeof window.validarVisualCEP === 'function') {
+            window.validarVisualCEP(cep, true);
+          }
+        }
+        erros.push("• CEP Incompleto (são necessários 8 dígitos, formato 00000-000)"); 
+      } else {
+        if (cep && typeof window.validarVisualCEP === 'function') {
+          window.validarVisualCEP(cep, false);
+        }
       }
 
       if (erros.length > 0) {
+        var primeiroInvalido = document.querySelector('#aba2 .campo-invalido');
+        if (primeiroInvalido) {
+          try {
+            primeiroInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            primeiroInvalido.focus();
+          } catch(e) {}
+        }
         if (!silencioso) {
           alert("⚠️ Etapa 2 Incompleta!\n\nPor favor, preencha os campos obrigatórios da Criança:\n\n" + erros.join("\n"));
         }
@@ -1465,17 +2545,56 @@
     window.validarAba3 = window.validarEtapa3;
     window.validarAba4 = window.validarEtapa4;
 
-    // Atualiza o estado visual das abas no cabeçalho
+    /* CONTROLE DA BARRA DE STATUS DE PROGRESSO NO FRONTEND */
+    window.atualizarBarraStatusFrontend = function(etapa) {
+      var badge = document.getElementById('statusBadgeEtapa');
+      var nome = document.getElementById('statusNomeEtapa');
+      var pct = document.getElementById('statusPctTexto');
+      var barra = document.getElementById('statusProgressBarraPreenchimento');
+      var trilho = document.getElementById('statusProgressBarraTrilho');
+
+      var infoEtapas = {
+        1: { badge: "ETAPA 1 DE 4", nome: "Foto 3x4 do Atleta", pct: 25 },
+        2: { badge: "ETAPA 2 DE 4", nome: "Dados Pessoais da Criança", pct: 50 },
+        3: { badge: "ETAPA 3 DE 4", nome: "Dados dos Responsáveis", pct: 75 },
+        4: { badge: "ETAPA 4 DE 4", nome: "Anexos, Ficha Médica e Termos", pct: 100 }
+      };
+
+      var info = infoEtapas[etapa] || infoEtapas[1];
+      if (badge) badge.innerText = info.badge;
+      if (nome) nome.innerText = info.nome;
+      if (pct) pct.innerText = info.pct + "%";
+      if (barra) barra.style.width = info.pct + "%";
+      if (trilho) {
+        trilho.setAttribute('aria-valuenow', info.pct);
+        trilho.setAttribute('aria-valuetext', info.badge + ' - ' + info.pct + '%');
+      }
+    };
+
+    // Atualiza o estado visual das abas no cabeçalho e a barra de status do frontend
     window.atualizarHeaderAbas = function() {
+      var etapaAtual = 1;
       for (var i = 1; i <= 4; i++) {
+        var aba = document.getElementById('aba' + i);
         var btnSt = document.getElementById('st' + i);
+        if (aba && (aba.style.display === 'flex' || aba.style.display === 'block')) {
+          etapaAtual = i;
+        }
         if (btnSt) {
           if (i > window.etapaMaximaAlcancada) {
             btnSt.classList.add('bloqueado');
           } else {
             btnSt.classList.remove('bloqueado');
           }
+          if (i < window.etapaMaximaAlcancada || i < etapaAtual) {
+            btnSt.classList.add('concluido');
+          } else {
+            btnSt.classList.remove('concluido');
+          }
         }
+      }
+      if (typeof window.atualizarBarraStatusFrontend === 'function') {
+        window.atualizarBarraStatusFrontend(etapaAtual);
       }
     };
 
@@ -1553,6 +2672,7 @@
 
       window.atualizarHeaderAbas();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.salvarRascunho();
     };
 
     /* MÁSCARAS */
@@ -1607,31 +2727,275 @@
       i.value = v;
     };
 
-    window.mCEP = function(i) {
-      var v = i.value.replace(/\D/g, "").slice(0,8);
-      v = v.replace(/(\d{5})(\d)/, "$1-$2");
-      i.value = v;
-      if(v) i.classList.remove('campo-invalido');
+    window.atualizarIconeFeedbackCEP = function(valorOuDigitos) {
+      var icone = document.getElementById('iconeStatusCep');
+      if (!icone) return;
+
+      var digitos = String(valorOuDigitos || '').replace(/\D/g, "");
+
+      if (digitos.length === 0) {
+        icone.style.display = 'none';
+        icone.innerHTML = '';
+        icone.title = '';
+        icone.removeAttribute('aria-label');
+      } else if (digitos.length < 8) {
+        icone.style.display = 'inline-flex';
+        icone.innerHTML = '⚠️';
+        icone.style.color = '#d97706';
+        icone.title = 'CEP incompleto (' + digitos.length + ' de 8 dígitos). Formato: 00000-000';
+        icone.setAttribute('aria-label', 'Alerta: CEP incompleto (' + digitos.length + ' de 8 dígitos)');
+      } else {
+        icone.style.display = 'inline-flex';
+        icone.innerHTML = '✅';
+        icone.style.color = '#16a34a';
+        icone.title = 'Formato de CEP válido (8 dígitos)';
+        icone.setAttribute('aria-label', 'Sucesso: Formato de CEP válido');
+      }
     };
 
-    window.buscarCEP = function(cep) {
-      var cepLimpo = cep.replace(/\D/g, "");
-      if (cepLimpo.length === 8) {
-        fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`)
-          .then(function(res) { return res.json(); })
-          .then(function(dados) {
-            if (!dados.erro) {
-              document.getElementById('endAtleta').value = dados.logradouro || '';
-              document.getElementById('bairroAtleta').value = dados.bairro || '';
-              document.getElementById('cidadeAtleta').value = (dados.localidade || 'Vinhedo') + " / " + (dados.uf || 'SP');
-            } else {
-              alert("⚠️ CEP não encontrado na base ViaCEP. Preencha o endereço manualmente.");
-            }
-          })
-          .catch(function(err) {
-            console.warn("Erro ao consultar CEP:", err);
-          });
+    window.validarVisualCEP = function(input, destacarSeIncompleto) {
+      if (!input) input = document.getElementById('cepAtleta');
+      if (!input) return false;
+
+      var digitos = (input.value || '').replace(/\D/g, "");
+      var msgAvisoEl = document.getElementById('msgAvisoCep');
+      var statusEl = document.getElementById('statusBuscaCep');
+
+      window.atualizarIconeFeedbackCEP(digitos);
+
+      // Vazio
+      if (digitos.length === 0) {
+        if (destacarSeIncompleto) {
+          input.classList.add('campo-invalido');
+          if (msgAvisoEl) {
+            msgAvisoEl.style.display = 'block';
+            msgAvisoEl.style.color = '#c0392b';
+            msgAvisoEl.innerText = '⚠️ O CEP é obrigatório (informe os 8 dígitos).';
+          }
+        } else {
+          input.classList.remove('campo-invalido');
+          if (msgAvisoEl && (msgAvisoEl.innerText.indexOf('incompleto') !== -1 || msgAvisoEl.innerText.indexOf('obrigatório') !== -1)) {
+            msgAvisoEl.style.display = 'none';
+          }
+        }
+        return false;
       }
+
+      // Menos de 8 dígitos (incompleto)
+      if (digitos.length < 8) {
+        if (destacarSeIncompleto) {
+          input.classList.add('campo-invalido');
+          if (msgAvisoEl) {
+            msgAvisoEl.style.display = 'block';
+            msgAvisoEl.style.color = '#c0392b';
+            msgAvisoEl.innerText = '⚠️ CEP incompleto: informe os 8 dígitos (digitados ' + digitos.length + ' de 8).';
+          }
+          if (statusEl) statusEl.style.display = 'none';
+        } else {
+          if (input.classList.contains('campo-invalido')) {
+            if (msgAvisoEl) {
+              msgAvisoEl.style.display = 'block';
+              msgAvisoEl.style.color = '#c0392b';
+              msgAvisoEl.innerText = '⚠️ CEP incompleto: faltam ' + (8 - digitos.length) + ' dígito(s).';
+            }
+          }
+        }
+        return false;
+      }
+
+      // Exatamente 8 dígitos (completo)
+      input.classList.remove('campo-invalido');
+      if (msgAvisoEl && (msgAvisoEl.innerText.indexOf('incompleto') !== -1 || msgAvisoEl.innerText.indexOf('obrigatório') !== -1)) {
+        msgAvisoEl.style.display = 'none';
+      }
+      return true;
+    };
+
+    window.validarCEPOnBlur = function(input) {
+      if (!input) input = document.getElementById('cepAtleta');
+      if (!input) return;
+
+      var digitos = (input.value || '').replace(/\D/g, "");
+      window.atualizarIconeFeedbackCEP(digitos);
+
+      if (digitos.length > 0 && digitos.length < 8) {
+        window.validarVisualCEP(input, true);
+      } else if (digitos.length === 8) {
+        window.validarVisualCEP(input, false);
+        window.buscarCEP(digitos);
+      }
+    };
+
+    window.mCEP = function(i) {
+      if (!i) return;
+      // Garante somente caracteres numéricos e limita em no máximo 8 dígitos
+      var digitos = (i.value || "").replace(/\D/g, "").slice(0, 8);
+
+      // Força o hífen automaticamente após o 5º dígito para melhor experiência de digitação
+      var formatado = "";
+      if (digitos.length > 5) {
+        formatado = digitos.slice(0, 5) + "-" + digitos.slice(5);
+      } else if (digitos.length === 5) {
+        formatado = digitos + "-";
+      } else {
+        formatado = digitos;
+      }
+      i.value = formatado;
+
+      // Atualiza feedback visual imediato ao lado do input com ícone de alerta ou sucesso
+      if (typeof window.atualizarIconeFeedbackCEP === 'function') {
+        window.atualizarIconeFeedbackCEP(digitos);
+      }
+
+      if (digitos.length === 8) {
+        i.classList.remove('campo-invalido');
+        if (typeof window.validarVisualCEP === 'function') window.validarVisualCEP(i, false);
+        if (typeof window.buscarCEP === 'function') window.buscarCEP(digitos);
+      } else {
+        // Validação visual em tempo real: se o campo estiver com erro destacado, atualiza a contagem dinamicamente
+        if (i.classList.contains('campo-invalido')) {
+          if (digitos.length === 0) {
+            if (typeof window.validarVisualCEP === 'function') window.validarVisualCEP(i, false);
+          } else {
+            if (typeof window.validarVisualCEP === 'function') window.validarVisualCEP(i, true);
+          }
+        }
+      }
+    };
+
+    window.ultimoCepConsultado = '';
+    window.buscandoCepEmAndamento = false;
+
+    window.buscarCEP = function(cep) {
+      var cepInput = document.getElementById('cepAtleta');
+      var valorCep = cep !== undefined && cep !== null ? String(cep) : (cepInput ? cepInput.value : '');
+      var cepLimpo = valorCep.replace(/\D/g, "");
+
+      var statusEl = document.getElementById('statusBuscaCep');
+      var spinnerEl = document.getElementById('spinnerCep');
+      var msgAvisoEl = document.getElementById('msgAvisoCep');
+      var iconeEl = document.getElementById('iconeStatusCep');
+
+      // Se não tiver 8 dígitos válidos, não prossegue
+      if (cepLimpo.length !== 8) {
+        window.atualizarIconeFeedbackCEP(cepLimpo);
+        if (msgAvisoEl && cepLimpo.length === 0) {
+          msgAvisoEl.style.display = 'none';
+        }
+        return;
+      }
+
+      // Evita requisição duplicada se já foi consultado com sucesso
+      if (window.ultimoCepConsultado === cepLimpo && !window.buscandoCepEmAndamento) {
+        window.atualizarIconeFeedbackCEP(cepLimpo);
+        return;
+      }
+
+      window.ultimoCepConsultado = cepLimpo;
+      window.buscandoCepEmAndamento = true;
+
+      if (statusEl) {
+        statusEl.style.display = 'inline';
+        statusEl.style.color = '#2d5a4c';
+        statusEl.innerHTML = '<i>Buscando endereço...</i>';
+      }
+      if (spinnerEl) spinnerEl.style.display = 'inline-block';
+      if (msgAvisoEl) msgAvisoEl.style.display = 'none';
+      if (iconeEl) {
+        iconeEl.style.display = 'inline-flex';
+        iconeEl.innerHTML = '⏳';
+        iconeEl.title = 'Buscando endereço nos Correios...';
+      }
+
+      fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/')
+        .then(function(res) {
+          if (!res.ok) throw new Error("Falha na consulta ao serviço de CEP");
+          return res.json();
+        })
+        .then(function(dados) {
+          window.buscandoCepEmAndamento = false;
+          if (spinnerEl) spinnerEl.style.display = 'none';
+
+          if (dados && !dados.erro) {
+            var endEl = document.getElementById('endAtleta');
+            var bairroEl = document.getElementById('bairroAtleta');
+            var cidadeEl = document.getElementById('cidadeAtleta');
+
+            if (endEl) {
+              // Preenche logradouro se retornado pela base
+              endEl.value = dados.logradouro || '';
+            }
+            if (bairroEl) {
+              bairroEl.value = dados.bairro || '';
+            }
+            if (cidadeEl) {
+              var cidadeNome = dados.localidade || 'Vinhedo';
+              var ufSigla = dados.uf || 'SP';
+              cidadeEl.value = cidadeNome + ' / ' + ufSigla;
+            }
+
+            if (statusEl) {
+              statusEl.style.display = 'inline';
+              statusEl.style.color = '#1e7e34';
+              statusEl.innerText = '✅ Localizado';
+              setTimeout(function() {
+                if (statusEl && statusEl.innerText === '✅ Localizado') {
+                  statusEl.style.display = 'none';
+                }
+              }, 4000);
+            }
+
+            if (iconeEl) {
+              iconeEl.style.display = 'inline-flex';
+              iconeEl.innerHTML = '✅';
+              iconeEl.title = 'CEP válido e endereço localizado!';
+            }
+
+            if (cepInput) cepInput.classList.remove('campo-invalido');
+
+            // Salva no rascunho os novos dados preenchidos automaticamente
+            if (typeof window.salvarRascunho === 'function') {
+              window.salvarRascunho();
+            }
+
+            // Se encontrou logradouro, foca no campo de endereço para inclusão do número
+            if (endEl && dados.logradouro) {
+              setTimeout(function() {
+                endEl.focus();
+                var len = endEl.value.length;
+                endEl.setSelectionRange(len, len);
+              }, 150);
+            }
+          } else {
+            if (statusEl) statusEl.style.display = 'none';
+            if (iconeEl) {
+              iconeEl.style.display = 'inline-flex';
+              iconeEl.innerHTML = '⚠️';
+              iconeEl.title = 'CEP não localizado nos Correios';
+            }
+            if (msgAvisoEl) {
+              msgAvisoEl.style.display = 'block';
+              msgAvisoEl.style.color = '#c0392b';
+              msgAvisoEl.innerText = '⚠️ CEP não localizado nos Correios. Preencha rua e bairro manualmente.';
+            }
+          }
+        })
+        .catch(function(err) {
+          window.buscandoCepEmAndamento = false;
+          console.warn("Erro ao consultar CEP:", err);
+          if (spinnerEl) spinnerEl.style.display = 'none';
+          if (statusEl) statusEl.style.display = 'none';
+          if (iconeEl) {
+            iconeEl.style.display = 'inline-flex';
+            iconeEl.innerHTML = '⚠️';
+            iconeEl.title = 'Não foi possível consultar o CEP online';
+          }
+          if (msgAvisoEl) {
+            msgAvisoEl.style.display = 'block';
+            msgAvisoEl.style.color = '#d35400';
+            msgAvisoEl.innerText = '⚠️ Não foi possível consultar o CEP online. Você pode preencher o endereço manualmente.';
+          }
+        });
     };
 
     /* ==========================================================================
@@ -1721,6 +3085,8 @@
             
             var btnRefazer = document.getElementById('btnRefazer');
             if (btnRefazer) btnRefazer.style.display = 'block';
+
+            window.salvarRascunho();
           };
           img.src = e.target.result;
         };
@@ -1757,6 +3123,7 @@
       if (btnRefazer) btnRefazer.style.display = 'none';
 
       window.pararCameraAvancada();
+      window.salvarRascunho();
     };
 
     /**
@@ -1852,6 +3219,8 @@
 
       var btnRefazer = document.getElementById('btnRefazer');
       if (btnRefazer) btnRefazer.style.display = 'block';
+
+      window.salvarRascunho();
     };
 
     /**
@@ -2122,6 +3491,7 @@
 
       window.renderizarListaAnexos();
       window.fecharModalAnexo();
+      window.salvarRascunho();
     };
 
     window.renderizarListaAnexos = function() {
@@ -2161,6 +3531,7 @@
     window.removerAnexo = function(index) {
       window.listaAnexosBase64[index] = null;
       window.renderizarListaAnexos();
+      window.salvarRascunho();
     };
 
     /* TERMOS E AUTORIZAÇÕES */
@@ -2171,6 +3542,50 @@
       if (box) {
         box.onscroll = window.verificarScrollTermos;
         window.verificarScrollTermos();
+      }
+    };
+
+    /* CONTROLE DA BARRA DE STATUS / PROGRESSO DO ENVIO */
+    function impedirFechamentoJanela(e) {
+      e.preventDefault();
+      e.returnValue = 'A sua inscrição está sendo finalizada e gravada com segurança. Por favor, não feche nem recarregue esta janela.';
+      return e.returnValue;
+    }
+
+    window.atualizarProgressoEnvio = function(porcentagem, faseTexto, detalheTexto) {
+      var boxBarra = document.getElementById('boxBarraProgresso');
+      var barra = document.getElementById('barraProgressoInterna');
+      var lblFase = document.getElementById('labelFaseProgresso');
+      var lblPct = document.getElementById('labelPorcentagemProgresso');
+      var txtMsg = document.getElementById('txtLoadingMsg');
+      var tit = document.getElementById('titLoading');
+      var avisoNaoFechar = document.getElementById('avisoNaoFechar');
+
+      if (boxBarra) boxBarra.style.display = 'block';
+      if (avisoNaoFechar) avisoNaoFechar.style.display = 'flex';
+      if (tit) tit.innerText = "Finalizando Inscrição...";
+      
+      var pctNum = Math.min(100, Math.max(5, Math.round(porcentagem)));
+      if (barra) barra.style.width = pctNum + '%';
+      if (lblPct) lblPct.innerText = pctNum + '%';
+      if (lblFase && faseTexto) {
+        lblFase.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2d5a4c; margin-right:4px;"></span>' + faseTexto;
+      }
+      if (txtMsg && detalheTexto) txtMsg.innerText = detalheTexto;
+
+      // Sincroniza também a barra de status de envio no próprio frontend (Aba 4)
+      var feCard = document.getElementById('statusEnvioFrontendCard');
+      var feBarra = document.getElementById('statusEnvioFrontendBarra');
+      var fePct = document.getElementById('statusEnvioFrontendPct');
+      var feTit = document.getElementById('statusEnvioFrontendTitulo');
+      var feMsg = document.getElementById('statusEnvioFrontendMsg');
+
+      if (feCard) feCard.style.display = 'block';
+      if (feBarra) feBarra.style.width = pctNum + '%';
+      if (fePct) fePct.innerText = pctNum + '%';
+      if (feTit && faseTexto) feTit.innerText = '⏳ ' + faseTexto;
+      if (feMsg && detalheTexto) {
+        feMsg.innerHTML = '<span>⚠️</span> <span>' + detalheTexto + ' <strong>Não feche nem saia desta janela.</strong></span>';
       }
     };
 
@@ -2195,9 +3610,33 @@
       }
 
       var modalLoad = document.getElementById('modalLoading');
-      var txtLoad = document.getElementById('txtLoadingMsg');
-      txtLoad.innerText = "⏳ Compactando arquivos e salvando no Google Drive...";
+      
+      // Ativa proteção contra fechamento acidental da janela
+      window.addEventListener('beforeunload', impedirFechamentoJanela);
+
+      // Inicia barra de status e fases de progresso
+      window.atualizarProgressoEnvio(15, "Validando formulário e autorizações...", "Conferindo dados informados e termos assinados...");
       modalLoad.style.display = 'flex';
+
+      var timersProgresso = [];
+      var cronogramaEnvio = [
+        { tempo: 800, pct: 35, fase: "Compactando fotos e anexos...", msg: "Otimizando imagens para transmissão rápida e segura..." },
+        { tempo: 2200, pct: 60, fase: "Transmitindo ao Google Drive...", msg: "Gravando arquivos na pasta oficial de cadastros..." },
+        { tempo: 4500, pct: 80, fase: "Salvando na planilha oficial...", msg: "Registrando linhas e gerando código de confirmação..." },
+        { tempo: 7500, pct: 92, fase: "Quase pronto! Concluindo...", msg: "Aguardando confirmação definitiva do servidor..." }
+      ];
+
+      cronogramaEnvio.forEach(function(etapa) {
+        var t = setTimeout(function() {
+          window.atualizarProgressoEnvio(etapa.pct, etapa.fase, etapa.msg);
+        }, etapa.tempo);
+        timersProgresso.push(t);
+      });
+
+      function finalizarBloqueioProgresso() {
+        timersProgresso.forEach(function(t) { clearTimeout(t); });
+        window.removeEventListener('beforeunload', impedirFechamentoJanela);
+      }
 
       var remedioRadios = document.getElementsByName('remedioReg');
       var remedioVal = "Não";
@@ -2303,24 +3742,99 @@
       })
       .then(res => res.json())
       .then(data => {
-        modalLoad.style.display = 'none';
+        finalizarBloqueioProgresso();
         if (data.sucesso) {
-          document.getElementById('appContent').style.display = 'none';
-          document.getElementById('sucessoScreen').style.display = 'block';
-          document.getElementById('resIdAtleta').innerText = data.idCadastro;
+          window.atualizarProgressoEnvio(100, "Inscrição Concluída!", "Os dados foram inseridos com sucesso!");
+          setTimeout(function() {
+            modalLoad.style.display = 'none';
+            var feCard = document.getElementById('statusEnvioFrontendCard');
+            if (feCard) feCard.style.display = 'none';
 
-          var textoWhats = encodeURIComponent("Olá! " + (window.idAtletaEdicao ? "Atualizei" : "Fiz") + " a inscrição do atleta " + data.nomeAtleta + " no Parque Iolanda.\n\nCódigo de Confirmação (ID): " + data.idCadastro);
-          document.getElementById('btnWhatsConfirm').href = "https://api.whatsapp.com/send?text=" + textoWhats;
-          
-          window.scrollTo(0, 0);
+            window.limparRascunho(false);
+            document.getElementById('appContent').style.display = 'none';
+
+            // Popula os IDs de confirmação
+            var resIdEl = document.getElementById('resIdAtleta');
+            if (resIdEl) resIdEl.innerText = data.idCadastro;
+
+            var modalResIdEl = document.getElementById('modalResIdAtleta');
+            if (modalResIdEl) modalResIdEl.innerText = data.idCadastro;
+
+            // Link do WhatsApp
+            var textoWhats = encodeURIComponent("Olá! " + (window.idAtletaEdicao ? "Atualizei" : "Fiz") + " a inscrição do atleta " + data.nomeAtleta + " no Parque Iolanda.\n\nCódigo de Confirmação (ID): " + data.idCadastro);
+            var btnWhats = document.getElementById('btnWhatsConfirm');
+            if (btnWhats) btnWhats.href = "https://api.whatsapp.com/send?text=" + textoWhats;
+            var btnModalWhats = document.getElementById('btnModalWhats');
+            if (btnModalWhats) btnModalWhats.href = "https://api.whatsapp.com/send?text=" + textoWhats;
+
+            // Exibe a tela de confirmação e o modal de sucesso com o botão para fechar o sistema
+            var sucScreen = document.getElementById('sucessoScreen');
+            if (sucScreen) sucScreen.style.display = 'block';
+
+            var modalSuc = document.getElementById('modalSucessoGravacao');
+            if (modalSuc) modalSuc.style.display = 'flex';
+
+            window.scrollTo(0, 0);
+          }, 400);
         } else {
+          modalLoad.style.display = 'none';
+          var feCard = document.getElementById('statusEnvioFrontendCard');
+          if (feCard) feCard.style.display = 'none';
           alert("❌ Erro: " + data.erro);
         }
       })
       .catch(err => {
+        finalizarBloqueioProgresso();
         modalLoad.style.display = 'none';
+        var feCard = document.getElementById('statusEnvioFrontendCard');
+        if (feCard) feCard.style.display = 'none';
         alert("Erro na gravação: " + err.message);
       });
+    };
+
+    /* FECHAMENTO SEGURO DO SISTEMA */
+    window.fecharSistema = function() {
+      // 1. Desativa a proteção contra fechamento da janela
+      try {
+        if (typeof impedirFechamentoJanela === 'function') {
+          window.removeEventListener('beforeunload', impedirFechamentoJanela);
+        }
+      } catch (e) {}
+
+      // 2. Limpa dados de rascunho
+      if (typeof window.limparRascunho === 'function') {
+        window.limparRascunho(false);
+      }
+
+      // 3. Oculta todos os modais e telas ativas
+      var idsParaOcultar = [
+        'modalLoading',
+        'modalSucessoGravacao',
+        'modalTermos',
+        'modalAnexo',
+        'appContent',
+        'loginScreen',
+        'sucessoScreen'
+      ];
+      idsParaOcultar.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+
+      // 4. Apresenta a tela de sistema encerrado
+      var telaEnc = document.getElementById('telaSistemaEncerrado');
+      if (telaEnc) {
+        telaEnc.style.display = 'flex';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // 5. Tenta fechar a janela / aba no navegador
+      try {
+        window.open('', '_self', '');
+        window.close();
+      } catch (e) {
+        console.log("Fechamento direto da janela restringido pelas políticas de segurança do navegador.");
+      }
     };
   </script>
 </body>
